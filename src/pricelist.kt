@@ -4,7 +4,7 @@ data class Product(var name: String, var price: Double, var code: Int)
 class PriceList {
     var list = mutableListOf<Product>()
     fun add(newProductName: String, newProductCode: Int, newProductPrice: Double) {
-        if (list.none { it == Product(newProductName, newProductPrice, newProductCode) })
+        if (list.none { it.code == newProductCode })
             list.add(Product(newProductName, newProductPrice, newProductCode))
         else println("Такой продукт уже имеется")
     }
