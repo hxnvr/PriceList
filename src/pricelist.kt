@@ -1,25 +1,28 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
-class Product(var name: String, var price: Double, var code: Int)
+data class Product(var name: String, var price: Double, var code: Int)
 
-class Pricelist {
+class PriceList {
     var list = mutableListOf<Product>()
     fun add(newProductName: String, newProductCode: Int, newProductPrice: Double) {
-        list.add(Product(newProductName, newProductPrice, newProductCode))
+        if (list.none { it == Product(newProductName, newProductPrice, newProductCode) })
+            list.add(Product(newProductName, newProductPrice, newProductCode))
+        else println("Такой продукт уже имеется")
     }
-    fun clearByName(unName: String){
-         list = list.filter{it.name != unName}.toMutableList()
-    }
-    fun clearByCode(unCode: Int){
+    fun clearByCode(unCode: Int): MutableList<Product> {
         list = list.filter{it.code != unCode}.toMutableList()
+        return list
     }
-    fun priceChangeByName(name: String, newPrice: Double) {
-        list.map{if (it.name == name) it.price = newPrice}
-    }
-    fun priceChangeByCode(code: Int, newPrice: Double){
+    fun priceChangeByCode(code: Int, newPrice: Double): MutableList<Product> {
         list.map{if (it.code == code) it.price = newPrice}
+        return list
     }
-    fun nameChange(code: Int, newName: String){
+    fun nameChange(code: Int, newName: String): MutableList<Product> {
         list.map{if (it.code == code) it.name = newName}
+        return list
+    }
+    fun purchasePrice(num: Int, code: Int): Double {
+        val prod = list.filter { it.code == code }
+        return prod[0].price * num.toDouble()
     }
 }
 
