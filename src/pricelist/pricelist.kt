@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
+package pricelist
 data class Product(var name: String, var price: Double, var code: Int)
 
 class PriceList {
