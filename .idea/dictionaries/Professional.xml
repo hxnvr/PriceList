@@ -2,6 +2,8 @@
   <dictionary name="Professional">
     <words>
       <w>pricelist</w>
+      <w>setname</w>
+      <w>setprice</w>
     </words>
   </dictionary>
 </component>

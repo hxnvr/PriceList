@@ -1,29 +1,50 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
 package pricelist
-data class Product(var name: String, var price: Double, var code: Int)
+ class Product(var name: String, var price: Double) {
+    fun setprice(newPrice: Double) {
+        if (newPrice > 0) {
+            this.price = newPrice
+        } else throw IllegalArgumentException("Неверно указана цена")
+    }
+     fun setname(newName: String){
+         if (newName != "") {
+             this.name = newName
+         } else throw IllegalArgumentException("Неверно указано название товара")
+     }
+}
 
 class PriceList {
-    var list = mutableListOf<Product>()
-    fun add(newProductName: String, newProductCode: Int, newProductPrice: Double) {
-        if (list.none { it.code == newProductCode })
-            list.add(Product(newProductName, newProductPrice, newProductCode))
-        else println("Такой продукт уже имеется")
+    private var map = mutableMapOf<Int,Product>()
+    fun add(newProductName: String, newProductCode: Int, newProductPrice: Double): MutableMap<Int,Product> {
+        if (map.containsKey(newProductCode)) throw IllegalArgumentException("Продукт с таким кодом уже существует")
+        else map[newProductCode] = Product(newProductName, newProductPrice)
+        return map
     }
-    fun clearByCode(unCode: Int): MutableList<Product> {
-        list = list.filter{it.code != unCode}.toMutableList()
-        return list
+    fun clear(unCode: Int): MutableMap<Int,Product> {
+       if (map.containsKey(unCode)){
+           map.remove(unCode)
+           return map
+       } else throw IllegalArgumentException("В списке нет продукта с таким кодом")
     }
-    fun priceChangeByCode(code: Int, newPrice: Double): MutableList<Product> {
-        list.map{if (it.code == code) it.price = newPrice}
-        return list
+    private fun find(code: Int): Product{
+        return map[code]!!
     }
-    fun nameChange(code: Int, newName: String): MutableList<Product> {
-        list.map{if (it.code == code) it.name = newName}
-        return list
+    fun priceChange(code: Int, newPrice: Double):  MutableMap<Int,Product> {
+        if (map.containsKey(code)) {
+            find(code).setprice(newPrice)
+            return map
+        }
+        else throw IllegalArgumentException("В списке нет продукта с таким кодом")
+    }
+    fun nameChange(code: Int, newName: String): MutableMap<Int,Product> {
+        if (map.containsKey(code)) {
+            find(code).setname(newName)
+            return map
+        }
+        else throw IllegalArgumentException("В списке нет продукта с таким кодом")
     }
     fun purchasePrice(num: Int, code: Int): Double {
-        val prod = list.filter { it.code == code }
-        return prod[0].price * num.toDouble()
+        return find(code).price * num
     }
 }
 
