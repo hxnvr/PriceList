@@ -1,5 +1,4 @@
 package pricelist
-import pricelist.PriceList
 fun main() {
     val test = PriceList()
     test.add("Молоко", 384,5.33)
