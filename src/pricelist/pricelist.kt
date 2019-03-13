@@ -19,33 +19,35 @@ package pricelist
 
 class PriceList {
     private var map = mutableMapOf<Int,Product>()
-    fun add(newProductName: String, newProductCode: Int, newProductPrice: Double) {
-        if (map.containsKey(newProductCode)) throw IllegalArgumentException("Продукт с таким кодом уже существует")
+    fun add(newProductName: String, newProductCode: Int, newProductPrice: Double): Boolean {
+        if (map.containsKey(newProductCode)) return false
         else map[newProductCode] = Product(newProductName, newProductPrice)
+        return true
     }
 
-    fun clear(unCode: Int) {
-       if (map.containsKey(unCode)){
-           map.remove(unCode)
-       } else throw IllegalArgumentException("В списке нет продукта с таким кодом")
+    fun clear(unCode: Int): Boolean {
+        return if (map.containsKey(unCode)){
+            map.remove(unCode)
+            true
+        } else false
     }
 
     private fun find(code: Int): Product{
         return map[code]!!
     }
 
-    fun priceChange(code: Int, newPrice: Double) {
-        if (map.containsKey(code)) {
+    fun priceChange(code: Int, newPrice: Double): Boolean {
+        return if (map.containsKey(code)) {
             find(code).setprice(newPrice)
-        }
-        else throw IllegalArgumentException("В списке нет продукта с таким кодом")
+            true
+        } else false
     }
 
-    fun nameChange(code: Int, newName: String) {
-        if (map.containsKey(code)) {
+    fun nameChange(code: Int, newName: String): Boolean {
+        return if (map.containsKey(code)) {
             find(code).setname(newName)
-        }
-        else throw IllegalArgumentException("В списке нет продукта с таким кодом")
+            true
+        } else false
     }
 
     fun purchasePrice(num: Int, code: Int): Double {
